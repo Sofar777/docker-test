@@ -7,28 +7,31 @@
 # 		b、构建新镜像
 # 		c、运行镜像
 #!/bin/bash
-image=$1
 containerID=`docker ps -a | grep $1 | awk '{print $1}'`
-echo  "当前镜像进程: ${containerID}"
-echo  "构建镜像名称: ${image}"
+divideTag="\n===================\n\n"
+echo  "构建镜像名称: $1"
 
 # 拉取代码
 git pull
-echo "拉取代码完毕"
+echo "拉取代码完毕${divideTag}"
 	
 # 如果进程存在	
 # 	杀死进程
 # 	移除镜像
 if [ -n "$containerID" ]; then 
+	echo  "当前镜像进程: ${containerID}"
     docker stop ${containerID}
     docker rm ${containerID}
     imageID=`docker images | grep $1 | awk '{print $3}'`
     docker rmi ${imageID}
+    echo "旧进程清除完毕${divideTag}"
 fi
 
 # 构建镜像
 docker build -t $1 .
+echo "构建镜像完毕${divideTag}"
 
 # 运行镜像
 docker run -d -p 80:3000 $1
+echo "镜像运行成功${divideTag}"
 
