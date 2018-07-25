@@ -8,7 +8,7 @@
 # 		c、运行镜像
 #!/bin/bash
 containerID=`docker ps -a | grep $1 | awk '{print $1}'`
-divideTag="\n===================\n\n"
+divideTag=$"\n===================\n\n"
 echo  "构建镜像名称: $1"
 
 # 拉取代码
