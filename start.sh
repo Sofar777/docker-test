@@ -8,12 +8,12 @@
 # 		c、运行镜像
 #!/bin/bash
 containerID=`docker ps -a | grep $1 | awk '{print $1}'`
-divideTag=$"\n===================\n\n"
+divideTag='\n===================\n\n'
 echo  "构建镜像名称: $1"
 
 # 拉取代码
 git pull
-echo "拉取代码完毕${divideTag}"
+echo -e "拉取代码完毕${divideTag}"
 	
 # 如果进程存在	
 # 	杀死进程
@@ -24,14 +24,14 @@ if [ -n "$containerID" ]; then
     docker rm ${containerID}
     imageID=`docker images | grep $1 | awk '{print $3}'`
     docker rmi ${imageID}
-    echo "旧进程清除完毕${divideTag}"
+    echo -e "旧进程清除完毕${divideTag}"
 fi
 
 # 构建镜像
 docker build -t $1 .
-echo "构建镜像完毕${divideTag}"
+echo -e "构建镜像完毕${divideTag}"
 
 # 运行镜像
 docker run -d -p 80:3000 $1
-echo "镜像运行成功${divideTag}"
+echo -e "镜像运行成功${divideTag}"
 
